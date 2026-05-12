@@ -1,34 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Euler Game</title>
-  <link rel="icon" type="image/png" href="https://bluemoji.io/cdn-proxy/646218c67da47160c64a84d5/698e41fc8ca563c9d4c24cb9_107.png">
-  <link rel="stylesheet" href="styles.css">
-  <script src="script.js" type="module"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Euler Game</title>
+    <!-- Favicon link is perfect! -->
+    <link rel="icon" type="image/png" href="https://bluemoji.io/cdn-proxy/646218c67da47160c64a84d5/698e41fc8ca563c9d4c24cb9_107.png">
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" type="module"></script>
 </head>
 <body>
-  <div class="world" data-world>
-    <div class="score" data-score>0</div>
-    <div class="start-screen" data-start-screen>Press Any Key To Start</div>
-    <img src="imgs/ground.png" class="ground" data-ground>
-    <img src="imgs/ground.png" class="ground" data-ground>
-    <img src="imgs/dino-run-0.png" class="dino" data-dino>
-  </div>
-<div class="score" data-score style="
-    position: absolute; 
-    top: 20px; 
-    right: 30px; 
-    font-size: 2.5rem; 
-    font-weight: bold; 
-    font-family: sans-serif; 
-    color: #333; 
-    z-index: 100;">
-    <span style="color: #888; margin-right: 15px;">HI <span data-high-score>0</span></span>
-    <span data-current-score>0</span>
-</div>
+    <div class="world" data-world>
+        <!-- FANCY SCORE MOVED INSIDE WORLD -->
+        <div class="score" data-score style="
+            position: absolute; 
+            top: 20px; 
+            right: 30px; 
+            font-size: 2.5rem; 
+            font-weight: bold; 
+            font-family: sans-serif; 
+            color: #333; 
+            z-index: 100;">
+            <span style="color: #888; margin-right: 15px;">HI <span data-high-score>0</span></span>
+            <span data-current-score>0</span>
+        </div>
 
+        <div class="start-screen" data-start-screen>Press Any Key To Start</div>
+        <img src="imgs/ground.png" class="ground" data-ground>
+        <img src="imgs/ground.png" class="ground" data-ground>
+        <img src="imgs/dino-run-0.png" class="dino" data-dino>
+    </div>
 </body>
 </html>
