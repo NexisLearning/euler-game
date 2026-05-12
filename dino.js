@@ -10,14 +10,12 @@ let isJumping
 let dinoFrame
 let currentFrameTime
 let yVelocity
-let isJumpPending = false // NEW: The memory for your jump
 
 export function setupDino() {
   isJumping = false
   dinoFrame = 0
   currentFrameTime = 0
   yVelocity = 0
-  isJumpPending = false
   setCustomProperty(dinoElem, "--bottom", 0)
   document.removeEventListener("keydown", onKeyDown)
   document.addEventListener("keydown", onKeyDown)
@@ -26,12 +24,6 @@ export function setupDino() {
 export function updateDino(delta, speedScale) {
   handleRun(delta, speedScale)
   handleJump(delta)
-
-  // BUFFER LOGIC: If we just landed and a jump was waiting, jump!
-  if (!isJumping && isJumpPending) {
-    onJump()
-    isJumpPending = false
-  }
 }
 
 export function getDinoRect() {
@@ -40,11 +32,6 @@ export function getDinoRect() {
 
 export function setDinoLose() {
   dinoElem.src = "imgs/dino-lose.png"
-}
-
-// NEW: Allows script.js to tell the dino to jump later
-export function setJumpPending(value) {
-  isJumpPending = value
 }
 
 function handleRun(delta, speedScale) {
@@ -76,13 +63,58 @@ function handleJump(delta) {
 
 function onKeyDown(e) {
   if (e.code !== "Space") return
-  if (isJumping) {
-    isJumpPending = true  // buffer: will jump on landing
-  } else {
+  if (!isJumping) {
     onJump()
   }
 }
+
+function spawnPoopExplosion() {
+  const dinoRect = dinoElem.getBoundingClientRect()
+  const count = 12
+
+  for (let i = 0; i < count; i++) {
+    const poop = document.createElement("div")
+    poop.textContent = "💩"
+    poop.style.cssText = `
+      position: fixed;
+      font-size: ${Math.random() * 20 + 14}px;
+      left: ${dinoRect.left + dinoRect.width / 2}px;
+      top: ${dinoRect.top + dinoRect.height / 2}px;
+      pointer-events: none;
+      z-index: 9999;
+      transition: none;
+    `
+    document.body.appendChild(poop)
+
+    const angle = (i / count) * 2 * Math.PI
+    const speed = Math.random() * 80 + 40
+    const dx = Math.cos(angle) * speed
+    const dy = Math.sin(angle) * speed
+
+    let startTime = null
+    const duration = 600
+
+    function animate(time) {
+      if (!startTime) startTime = time
+      const elapsed = time - startTime
+      const progress = elapsed / duration
+
+      poop.style.transform = `translate(${dx * progress}px, ${dy * progress}px) rotate(${progress * 360}deg)`
+      poop.style.opacity = 1 - progress
+
+      if (elapsed < duration) {
+        requestAnimationFrame(animate)
+      } else {
+        poop.remove()
+      }
+    }
+
+    requestAnimationFrame(animate)
+  }
+}
+
 function onJump() {
   yVelocity = JUMP_SPEED
   isJumping = true
+  spawnPoopExplosion()
 }
