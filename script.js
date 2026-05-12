@@ -1,5 +1,5 @@
 import { updateGround, setupGround } from "./ground.js"
-import { updateDino, setupDino, getDinoRect, setDinoLose, setJumpPending } from "./dino.js"
+import { updateDino, setupDino, getDinoRect, setDinoLose } from "./dino.js"
 import { updateCactus, setupCactus, getCactusRects } from "./cactus.js"
 
 const WORLD_WIDTH = 100
@@ -88,8 +88,8 @@ function handleLose() {
 }
 
 function setPixelToWorldScale() {
-  let worldToPixelScale = (window.innerWidth / window.innerHeight < WORLD_WIDTH / WORLD_HEIGHT) 
-    ? window.innerWidth / WORLD_WIDTH 
+  let worldToPixelScale = (window.innerWidth / window.innerHeight < WORLD_WIDTH / WORLD_HEIGHT)
+    ? window.innerWidth / WORLD_WIDTH
     : window.innerHeight / WORLD_HEIGHT
   worldElem.style.width = `${WORLD_WIDTH * worldToPixelScale}px`
   worldElem.style.height = `${WORLD_HEIGHT * worldToPixelScale}px`
