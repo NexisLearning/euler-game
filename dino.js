@@ -75,10 +75,13 @@ function handleJump(delta) {
 }
 
 function onKeyDown(e) {
-  if (e.code !== "Space" || isJumping) return
-  onJump()
+  if (e.code !== "Space") return
+  if (isJumping) {
+    isJumpPending = true  // buffer: will jump on landing
+  } else {
+    onJump()
+  }
 }
-
 function onJump() {
   yVelocity = JUMP_SPEED
   isJumping = true
