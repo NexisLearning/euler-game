@@ -9,26 +9,52 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  background: #0d0d1a;
 }
 
 .world {
   overflow: hidden;
   position: relative;
+  background: linear-gradient(to bottom, #0d0d1a 60%, #1a1a2e);
+  border: 2px solid #3a3a6e;
+  border-radius: 8px;
+  box-shadow: 0 0 40px rgba(100, 100, 255, 0.2);
+}
+
+.game-title {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 3vmin;
+  color: #a78bfa;
+  letter-spacing: 0.2em;
+  text-shadow: 0 0 10px rgba(167, 139, 250, 0.7);
+  z-index: 100;
+  white-space: nowrap;
 }
 
 .score {
   position: absolute;
-  font-size: 3vmin;
-  right: 1vmin;
-  top: 1vmin;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 2.5vmin;
+  right: 2vmin;
+  top: 1.5vmin;
+  color: #a0a0c0;
+  z-index: 100;
 }
 
 .start-screen {
   position: absolute;
-  font-size: 5vmin;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 4vmin;
+  color: #c4b5fd;
+  text-shadow: 0 0 12px rgba(196, 181, 253, 0.6);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  white-space: nowrap;
 }
 
 .hide {
@@ -40,7 +66,8 @@ body {
   position: absolute;
   width: 300%;
   bottom: 0;
-  left: calc(var(--left) * 1%)
+  left: calc(var(--left) * 1%);
+  filter: hue-rotate(200deg) brightness(0.7);
 }
 
 .dino {
@@ -49,6 +76,7 @@ body {
   left: 1%;
   height: 30%;
   bottom: calc(var(--bottom) * 1%);
+  filter: drop-shadow(0 0 6px rgba(167, 139, 250, 0.5));
 }
 
 .cactus {
@@ -56,4 +84,5 @@ body {
   left: calc(var(--left) * 1%);
   height: 30%;
   bottom: 0;
+  filter: hue-rotate(200deg) brightness(0.8);
 }
