@@ -33,7 +33,9 @@ export function updateDino(delta, speedScale) {
 export function getDinoRect() {
   return dinoElem.getBoundingClientRect()
 }
-
+export function setJumpPending(value) {
+  isJumpPending = value;
+}
 export function setDinoLose() {
   dinoElem.src = "imgs/dino-lose.png"
 }
