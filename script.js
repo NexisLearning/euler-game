@@ -1,5 +1,5 @@
 import { updateGround, setupGround } from "./ground.js"
-import { updateDino, setupDino, getDinoRect, setDinoLose } from "./dino.js"
+import { updateDino, setupDino, getDinoRect, setDinoLose, setJumpPending } from "./dino.js" // HIGHLIGHT: Added setJumpPending
 import { updateCactus, setupCactus, getCactusRects } from "./cactus.js"
 
 const WORLD_WIDTH = 100
@@ -10,13 +10,23 @@ const worldElem = document.querySelector("[data-world]")
 const scoreElem = document.querySelector("[data-score]")
 const startScreenElem = document.querySelector("[data-start-screen]")
 
+// HIGHLIGHT: High Score Variables
+let highScore = localStorage.getItem("eulerHighScore") || 0 
+
 setPixelToWorldScale()
 window.addEventListener("resize", setPixelToWorldScale)
 document.addEventListener("keydown", handleStart, { once: true })
 
+// HIGHLIGHT: Jump Buffer Listener
+window.addEventListener("keydown", e => {
+  if (e.code !== "Space") return
+  setJumpPending(true) // Tells dino.js we WANT to jump even if in mid-air
+})
+
 let lastTime
 let speedScale
 let score
+
 function update(time) {
   if (lastTime == null) {
     lastTime = time
@@ -30,6 +40,7 @@ function update(time) {
   updateCactus(delta, speedScale)
   updateSpeedScale(delta)
   updateScore(delta)
+
   if (checkLose()) return handleLose()
 
   lastTime = time
@@ -56,7 +67,14 @@ function updateSpeedScale(delta) {
 
 function updateScore(delta) {
   score += delta * 0.01
-  scoreElem.textContent = Math.floor(score)
+  
+  // HIGHLIGHT: Update Score Display with High Score
+  if (score > highScore) {
+    highScore = score
+    localStorage.setItem("eulerHighScore", highScore)
+  }
+  
+  scoreElem.innerHTML = `HI ${Math.floor(highScore)} &nbsp;&nbsp; ${Math.floor(score)}`
 }
 
 function handleStart() {
