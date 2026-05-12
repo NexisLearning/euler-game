@@ -1,3 +1,4 @@
+let isJumpPending = false;
 import {
   incrementCustomProperty,
   setCustomProperty,
