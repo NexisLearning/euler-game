@@ -28,7 +28,15 @@ export function setupDino() {
 export function updateDino(delta, speedScale) {
   handleRun(delta, speedScale)
   handleJump(delta)
+
+  // ADDED: The "Buffer" logic
+  // If we aren't jumping (on ground) and a jump is waiting, jump now!
+  if (!isJumping && isJumpPending) {
+    onJump() 
+    isJumpPending = false
+  }
 }
+
 
 export function getDinoRect() {
   return dinoElem.getBoundingClientRect()
