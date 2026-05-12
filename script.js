@@ -8,21 +8,22 @@ const SPEED_SCALE_INCREASE = 0.00001
 
 const worldElem = document.querySelector("[data-world]")
 const scoreElem = document.querySelector("[data-score]")
+// NEW: Target the specific spans from your HTML
+const highScoreElem = document.querySelector("[data-high-score]")
+const currentScoreElem = document.querySelector("[data-current-score]")
 const startScreenElem = document.querySelector("[data-start-screen]")
 
-// --- HIGH SCORE INITIALIZATION ---
-let highScore = localStorage.getItem("eulerHighScore") || 0;
+let highScore = localStorage.getItem("eulerHighScore") || 0
+// Initialize display immediately
+if (highScoreElem) highScoreElem.textContent = Math.floor(highScore)
 
 setPixelToWorldScale()
 window.addEventListener("resize", setPixelToWorldScale)
-
-// Combined start and jump listener
 document.addEventListener("keydown", handleStart, { once: true })
 
-// --- JUMP BUFFERING LISTENER ---
 window.addEventListener("keydown", e => {
   if (e.code !== "Space") return
-  setJumpPending(true) // Signals dino.js to jump immediately upon landing
+  setJumpPending(true) 
 })
 
 let lastTime
@@ -67,17 +68,17 @@ function updateSpeedScale(delta) {
   speedScale += delta * SPEED_SCALE_INCREASE
 }
 
-// --- UPDATED SCORE LOGIC ---
+// HIGHLIGHT: Fixed this function to prevent the "half-cm stop" crash
 function updateScore(delta) {
   score += delta * 0.01
   
   if (score > highScore) {
     highScore = score
     localStorage.setItem("eulerHighScore", highScore)
+    if (highScoreElem) highScoreElem.textContent = Math.floor(highScore)
   }
   
-  // Displays both High Score (HI) and Current Score
-  scoreElem.innerHTML = `HI ${Math.floor(highScore)} &nbsp;&nbsp; ${Math.floor(score)}`
+  if (currentScoreElem) currentScoreElem.textContent = Math.floor(score)
 }
 
 function handleStart() {
@@ -106,7 +107,6 @@ function setPixelToWorldScale() {
   } else {
     worldToPixelScale = window.innerHeight / WORLD_HEIGHT
   }
-
   worldElem.style.width = `${WORLD_WIDTH * worldToPixelScale}px`
   worldElem.style.height = `${WORLD_HEIGHT * worldToPixelScale}px`
 }
