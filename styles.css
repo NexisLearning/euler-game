@@ -84,5 +84,4 @@ body {
   left: calc(var(--left) * 1%);
   height: 30%;
   bottom: 0;
-  filter: hue-rotate(200deg) brightness(0.8);
 }
