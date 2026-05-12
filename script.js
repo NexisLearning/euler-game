@@ -7,28 +7,24 @@ const WORLD_HEIGHT = 30
 const SPEED_SCALE_INCREASE = 0.00001
 
 const worldElem = document.querySelector("[data-world]")
-const scoreElem = document.querySelector("[data-score]")
-// NEW: Target the specific spans from your HTML
 const highScoreElem = document.querySelector("[data-high-score]")
 const currentScoreElem = document.querySelector("[data-current-score]")
 const startScreenElem = document.querySelector("[data-start-screen]")
 
 let highScore = localStorage.getItem("eulerHighScore") || 0
-// Initialize display immediately
 if (highScoreElem) highScoreElem.textContent = Math.floor(highScore)
 
 setPixelToWorldScale()
 window.addEventListener("resize", setPixelToWorldScale)
 document.addEventListener("keydown", handleStart, { once: true })
 
+// Listener for buffering jumps
 window.addEventListener("keydown", e => {
   if (e.code !== "Space") return
   setJumpPending(true) 
 })
 
-let lastTime
-let speedScale
-let score
+let lastTime, speedScale, score
 
 function update(time) {
   if (lastTime == null) {
@@ -68,16 +64,13 @@ function updateSpeedScale(delta) {
   speedScale += delta * SPEED_SCALE_INCREASE
 }
 
-// HIGHLIGHT: Fixed this function to prevent the "half-cm stop" crash
 function updateScore(delta) {
   score += delta * 0.01
-  
   if (score > highScore) {
     highScore = score
     localStorage.setItem("eulerHighScore", highScore)
     if (highScoreElem) highScoreElem.textContent = Math.floor(highScore)
   }
-  
   if (currentScoreElem) currentScoreElem.textContent = Math.floor(score)
 }
 
@@ -101,12 +94,9 @@ function handleLose() {
 }
 
 function setPixelToWorldScale() {
-  let worldToPixelScale
-  if (window.innerWidth / window.innerHeight < WORLD_WIDTH / WORLD_HEIGHT) {
-    worldToPixelScale = window.innerWidth / WORLD_WIDTH
-  } else {
-    worldToPixelScale = window.innerHeight / WORLD_HEIGHT
-  }
+  let worldToPixelScale = (window.innerWidth / window.innerHeight < WORLD_WIDTH / WORLD_HEIGHT) 
+    ? window.innerWidth / WORLD_WIDTH 
+    : window.innerHeight / WORLD_HEIGHT
   worldElem.style.width = `${WORLD_WIDTH * worldToPixelScale}px`
   worldElem.style.height = `${WORLD_HEIGHT * worldToPixelScale}px`
 }
