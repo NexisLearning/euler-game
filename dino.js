@@ -1,9 +1,4 @@
-let isJumpPending = false;
-import {
-  incrementCustomProperty,
-  setCustomProperty,
-  getCustomProperty,
-} from "./updateCustomProperty.js"
+import { getCustomProperty, incrementCustomProperty, setCustomProperty } from "./updateCustomProperty.js"
 
 const dinoElem = document.querySelector("[data-dino]")
 const JUMP_SPEED = 0.45
@@ -15,37 +10,41 @@ let isJumping
 let dinoFrame
 let currentFrameTime
 let yVelocity
+let isJumpPending = false // NEW: The memory for your jump
+
 export function setupDino() {
   isJumping = false
   dinoFrame = 0
   currentFrameTime = 0
   yVelocity = 0
+  isJumpPending = false
   setCustomProperty(dinoElem, "--bottom", 0)
-  document.removeEventListener("keydown", onJump)
-  document.addEventListener("keydown", onJump)
+  document.removeEventListener("keydown", onKeyDown)
+  document.addEventListener("keydown", onKeyDown)
 }
 
 export function updateDino(delta, speedScale) {
   handleRun(delta, speedScale)
   handleJump(delta)
 
-  // ADDED: The "Buffer" logic
-  // If we aren't jumping (on ground) and a jump is waiting, jump now!
+  // BUFFER LOGIC: If we just landed and a jump was waiting, jump!
   if (!isJumping && isJumpPending) {
-    onJump() 
+    onJump()
     isJumpPending = false
   }
 }
 
-
 export function getDinoRect() {
   return dinoElem.getBoundingClientRect()
 }
-export function setJumpPending(value) {
-  isJumpPending = value;
-}
+
 export function setDinoLose() {
   dinoElem.src = "imgs/dino-lose.png"
+}
+
+// NEW: Allows script.js to tell the dino to jump later
+export function setJumpPending(value) {
+  isJumpPending = value
 }
 
 function handleRun(delta, speedScale) {
@@ -75,9 +74,12 @@ function handleJump(delta) {
   yVelocity -= GRAVITY * delta
 }
 
-function onJump(e) {
+function onKeyDown(e) {
   if (e.code !== "Space" || isJumping) return
+  onJump()
+}
 
+function onJump() {
   yVelocity = JUMP_SPEED
   isJumping = true
 }
