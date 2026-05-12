@@ -18,12 +18,6 @@ setPixelToWorldScale()
 window.addEventListener("resize", setPixelToWorldScale)
 document.addEventListener("keydown", handleStart, { once: true })
 
-// Listener for buffering jumps
-window.addEventListener("keydown", e => {
-  if (e.code !== "Space") return
-  setJumpPending(true) 
-})
-
 let lastTime, speedScale, score
 
 function update(time) {
