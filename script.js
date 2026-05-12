@@ -1,5 +1,5 @@
 import { updateGround, setupGround } from "./ground.js"
-import { updateDino, setupDino, getDinoRect, setDinoLose, setJumpPending } from "./dino.js" // HIGHLIGHT: Added setJumpPending
+import { updateDino, setupDino, getDinoRect, setDinoLose, setJumpPending } from "./dino.js"
 import { updateCactus, setupCactus, getCactusRects } from "./cactus.js"
 
 const WORLD_WIDTH = 100
@@ -10,17 +10,19 @@ const worldElem = document.querySelector("[data-world]")
 const scoreElem = document.querySelector("[data-score]")
 const startScreenElem = document.querySelector("[data-start-screen]")
 
-// HIGHLIGHT: High Score Variables
-let highScore = localStorage.getItem("eulerHighScore") || 0 
+// --- HIGH SCORE INITIALIZATION ---
+let highScore = localStorage.getItem("eulerHighScore") || 0;
 
 setPixelToWorldScale()
 window.addEventListener("resize", setPixelToWorldScale)
+
+// Combined start and jump listener
 document.addEventListener("keydown", handleStart, { once: true })
 
-// HIGHLIGHT: Jump Buffer Listener
+// --- JUMP BUFFERING LISTENER ---
 window.addEventListener("keydown", e => {
   if (e.code !== "Space") return
-  setJumpPending(true) // Tells dino.js we WANT to jump even if in mid-air
+  setJumpPending(true) // Signals dino.js to jump immediately upon landing
 })
 
 let lastTime
@@ -65,15 +67,16 @@ function updateSpeedScale(delta) {
   speedScale += delta * SPEED_SCALE_INCREASE
 }
 
+// --- UPDATED SCORE LOGIC ---
 function updateScore(delta) {
   score += delta * 0.01
   
-  // HIGHLIGHT: Update Score Display with High Score
   if (score > highScore) {
     highScore = score
     localStorage.setItem("eulerHighScore", highScore)
   }
   
+  // Displays both High Score (HI) and Current Score
   scoreElem.innerHTML = `HI ${Math.floor(highScore)} &nbsp;&nbsp; ${Math.floor(score)}`
 }
 
