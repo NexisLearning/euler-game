@@ -1,3 +1,2 @@
 # Project for Geometry Honors
-Euler game
-  -Knockoff Dino Game
+Knockoff dino game, but with Euler the mathematician jumping over excrement.
